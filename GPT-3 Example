@@ -1,0 +1,11 @@
+import openai
+openai.api_key = "sk-*****"
+
+prompt_input = str(input("Enter Prompt: "))
+
+#Sends a request with the selected model and prompt input
+completion = openai.Completion.create(model="text-davinci-003", prompt=prompt_input)
+response = completion.choices[0].text
+
+#Prints the first output from the output list
+print(response)
