@@ -34,10 +34,6 @@ OutputBox = customtkinter.CTkTextbox(master=frame, width=500, height=300)
 OutputBox.pack(padx=(0, 0), pady=(20, 10))
 #OutputBox.configure(state='disabled')
 
-LoadingBar = customtkinter.Progressbar(master=frame_1, style='black.Horizontal.TProgressbar', length=150)
-LoadingBar.pack(padx=(20, 10), pady=(10, 10))
-#LoadingBar.pack_forget()
-
 PromptText = customtkinter.CTkEntry(master=frame, placeholder_text="Prompt", width=500, height=30)
 PromptText.pack(pady=4, padx=10)
 
