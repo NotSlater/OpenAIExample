@@ -20,6 +20,8 @@ def request():
     ##LoadingBar.pack()
     ##OutputBox.delete("0.0","end")
     textinput = PromptText.get()
+    
+    #if prompt is not foratted as a question, then use memory
     if "?" not in PromptText.get():
         memory.append(textinput)
 ##    user_input = "User: " + prompt_input + "\n\n"
@@ -27,12 +29,17 @@ def request():
 ##    print(user_input)
 
     #time.sleep(0.1)
+    #puts memories into a list format
     memories = ', '.join(memory)
     print(memories)
+
+    #If its a question, then access memory and respond using past memories
     if "?" in PromptText.get():
         prompt_input = memories + ": Using this information, " + textinput
     else:
         prompt_input = textinput
+        
+        
     print(prompt_input)
     completion = openai.Completion.create(model="text-davinci-003", prompt=prompt_input, max_tokens=200)
     output = completion.choices[0].text
@@ -40,7 +47,7 @@ def request():
     #print(response)
     OutputBox.insert(1.0, response, tags=None)
 
-
+#Establising a list of memories
 memory = []
 
 slider_progressbar_frame = customtkinter.CTkFrame(frame, fg_color="transparent")
