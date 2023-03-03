@@ -1,0 +1,70 @@
+import openai
+openai.api_key = "sk-*****"
+
+import customtkinter
+import tkinter
+import time
+
+customtkinter.set_appearance_mode("dark")
+customtkinter.set_default_color_theme("dark-blue")
+
+root = customtkinter.CTk()
+root.geometry(f"{800}x{600}")
+root.title("GPT-3 Python")
+
+frame = customtkinter.CTkFrame (master=root)
+frame.pack(pady=4, padx=4, fill="both", expand=True)
+
+def request():
+    
+    ##LoadingBar.pack()
+    ##OutputBox.delete("0.0","end")
+    textinput = PromptText.get()
+    if "?" not in PromptText.get():
+        memory.append(textinput)
+##    user_input = "User: " + prompt_input + "\n\n"
+##    OutputBox.insert(1.0, user_input, tags=None)
+##    print(user_input)
+
+    #time.sleep(0.1)
+    memories = ', '.join(memory)
+    print(memories)
+    if "?" in PromptText.get():
+        prompt_input = memories + ": Using this information, " + textinput
+    else:
+        prompt_input = textinput
+    print(prompt_input)
+    completion = openai.Completion.create(model="text-davinci-003", prompt=prompt_input, max_tokens=200)
+    output = completion.choices[0].text
+    response = "PyGPT: " + "".join([s for s in output.splitlines(True) if s.strip("\r\n")]) + "\n\n"
+    #print(response)
+    OutputBox.insert(1.0, response, tags=None)
+
+
+memory = []
+
+slider_progressbar_frame = customtkinter.CTkFrame(frame, fg_color="transparent")
+
+##sidebar_frame = customtkinter.CTkFrame(master=frame, width=140, corner_radius=0)
+##sidebar_frame.grid(row=0, column=0, rowspan=4, sticky="nsew")
+##sidebar_frame.grid_rowconfigure(4, weight=1)
+##logo_label = customtkinter.CTkLabel(sidebar_frame, text="CustomTkinter", font=customtkinter.CTkFont(size=20, weight="bold"))
+
+label = customtkinter.CTkLabel(master=frame, text="PyGPT-3", font=("Roboto", 24), justify=tkinter.CENTER)
+label.pack(pady=10, padx=10)
+
+OutputBox = customtkinter.CTkTextbox(master=frame, width=500, height=300)
+OutputBox.pack(padx=(0, 0), pady=(20, 10))
+##OutputBox.configure(state='disabled')
+
+##LoadingBar = customtkinter.Progressbar(master=frame_1, style='black.Horizontal.TProgressbar', length=150)
+##LoadingBar.pack(padx=(20, 10), pady=(10, 10))
+##LoadingBar.pack_forget()
+
+PromptText = customtkinter.CTkEntry(master=frame, placeholder_text="Prompt", width=500, height=30)
+PromptText.pack(pady=4, padx=10)
+
+LoginBtn = customtkinter.CTkButton(master=frame, text="Send", command=request)
+LoginBtn.pack(pady=10, padx=10)
+
+root.mainloop()
